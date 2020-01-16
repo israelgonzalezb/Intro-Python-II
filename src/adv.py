@@ -1,4 +1,5 @@
 from room import Room
+from player import Player
 
 # Declare all the rooms
 
@@ -33,6 +34,15 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+
+"""
+        overlook | treasure
+          |           |
+        foyer   -  narrow
+          |
+        outside
+"""
+
 #
 # Main
 #
@@ -49,3 +59,23 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+
+player = Player("foyer")
+
+player.talk()
+print(type(player.room));
+
+while True:
+    print(f'You are at the {room.get(player.room)}')
+    user_input = input("Choose a direction to continue\n")
+    if user_input == "q":
+        break
+    if user_input == "n":
+        break
+    if user_input == "s":
+        break
+    if user_input == "w":
+        break
+    if user_input == "e":
+        break
