@@ -51,20 +51,26 @@ room['treasure'].s_to = room['narrow']
 
 # Write a loop that:
 #
-# * Prints the current room name
-# * Prints the current description (the textwrap module might be useful here).
-# * Waits for user input and decides what to do.
+# ✓ Prints the current room name
+# ✓ Prints the current description (the textwrap module might be useful here).
+# ✓ Waits for user input and decides what to do.
 #
 # If the user enters a cardinal direction, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
 #
-# If the user enters "q", quit the game.
+# ✓ If the user enters "q", quit the game.
 
 
 player = Player("foyer")
 
-player.talk()
-print(type(player.room));
+# print(f"!!! {room['outside'].n_to}") # !!! Foyer
+# print(f"??? {room['outside'].__dict__}")
+# print(f"User's room is {player.room}") # User's room is foyer
+# print(f"North room adjacent key name is {room[player.room].__dict__.items()}") # North room adjacent key name is dict_items([('room', 'Foyer'), ('description', 'Dim light filters in from the south. Dusty\npassages run north and east.'), ('s_to', <room.Room object at 0x10ab220d0>), ('n_to', <room.Room object at 0x10ab22550>), ('e_to', <room.Room object at 0x10ab22390>)])
+print(f"North room adjacent key name is {list(room[player.room].__dict__.items())}")
+# player.room = "narrow"
+# print(f"room[player.room].n_to.room is {room[player.room].n_to.room}") # room[player.room].n_to.room is Grand Overlook
+# print(f"room[player.room].n_to.__dict__.keys() is {room[player.room].n_to.__dict__.keys()}") # room[player.room].n_to.keys() is dict_keys(['room', 'description', 's_to'])
 
 while True:
     print(f'You are at the {room.get(player.room)}')
@@ -72,6 +78,7 @@ while True:
     if user_input == "q":
         break
     if user_input == "n":
+        # player.room = room[player.room].n_to
         break
     if user_input == "s":
         break
