@@ -4,6 +4,3 @@
 class Player:
     def __init__(self, room):
         self.room = room
-
-    def talk(self):
-        print(f"Hello! I'm in {self.room}")
