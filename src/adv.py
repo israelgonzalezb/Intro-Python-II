@@ -35,12 +35,15 @@ room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
 
-"""
-        overlook | treasure
-          |           |
-        foyer   -  narrow
-          |
-        outside
+map = """
+               N
+      overlook ____________
+    |          | treasure |
+  W |          |          | E
+    |  foyer      narrow  |
+    |          ------------
+    | outside  |
+               S
 """
 
 #
@@ -72,38 +75,51 @@ player = Player(room["outside"])
 # print(f"room[player.room].n_to.room is {room[player.room].n_to.room}") # room[player.room].n_to.room is Grand Overlook
 # print(f"room[player.room].n_to.__dict__.keys() is {room[player.room].n_to.__dict__.keys()}") # room[player.room].n_to.keys() is dict_keys(['room', 'description', 's_to'])
 
-print(f"Player.room: {player.room.room_name}")
+print("\n")
+print('{:s}'.format('\u0332'.join('IZZY\'S LAMBDA ADVENTURE')))
+print("\nPress h for help\n")
 while True:
-    print(f'You are at the {player.room}')
-    user_input = input("Choose a direction to continue\n")
+    print(f'\nYou are at the {player.room}')
+    user_input = input("\nChoose a direction to continue...\n>> ")
     if user_input == "q":
-        print("A tunnel of sparkling light erupts from beneath your feet and whisks you away.")
+        print("\nA tunnel of sparkling light erupts from beneath your feet and whisks you away...\n")
         break
     if user_input == "n":
         try:
             player.room = player.room.n_to
         except AttributeError:
             if player.room.room_name == "Grand Overlook":
-                print("You stare into the abyss, and the abyss stares back. You decide not to attempt to cross the chasm.")
+                print("\nYou stare into the abyss, and the abyss stares back. You decide not to attempt to cross the chasm.")
             elif player.room.room_name == "Treasure Chamber":
-                print("You look at the wall in front of you. The rat in the corner hisses and scurries away.")
+                print("\nYou look at the wall in front of you. The rat in the corner hisses and scurries away.")
     if user_input == "s":
         try:
             player.room = player.room.s_to
         except AttributeError:
             if player.room.room_name == "Outside Cave Entrance":
-                print("You're already outside. You can't be anymore outside!")
+                print("\nYou're already outside. You can't be anymore outside!")
             elif player.room.room_name == "Narrow Passage":
-                print("You look at the southernmost wall of the passage. You notice etchings in a strange language. It reads ⟟⋔⌿⍜⍀⏁ ⏃⋏⏁⟟☌⍀⏃⎐⟟⏁⊬")
+                print("\nYou look at the southernmost wall of the passage. You notice etchings in a strange language. It reads ⟟⋔⌿⍜⍀⏁ ⏃⋏⏁⟟☌⍀⏃⎐⟟⏁⊬")
     if user_input == "w":
         try:
             player.room = player.room.w_to
         except AttributeError:
             if player.room.room_name == "Grand Overlook":
-                print("In the distance to the west, the sky is covered in glowing ash.")
+                print("\nIn the distance to the west, the sky is covered in glowing ash.")
             elif player.room.room_name == "Treasure Chamber":
-                print("The wall to the west is stained with liquid oozing from the ceiling.")
-            
-
+                print("\nThe wall to the west is stained with liquid oozing from the ceiling.")
+            elif player.room.room_name == "Outside Cave Entrance":
+                print("\nA large boulder blocks your path.")
     if user_input == "e":
-        player.room = player.room.e_to
+        try:
+            player.room = player.room.e_to
+        except AttributeError:
+            if player.room.room_name == "Narrow Passage":
+                print("\nYou look through a crevice in the wall. You see a far away village burning.")
+            elif player.room.room_name == "Outside Cave Entrance":
+                print("\nA pile of rotting, burnt felled trees lies to the east.")
+            elif player.room.room_name == "Treasure Chamber":
+                print("\nThe eastern wall is hot to the touch.")
+            if player.room.room_name == "Grand Overlook":
+                print("\nTo the east smoke billows from a distant village.")
+            
