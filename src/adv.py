@@ -1,5 +1,6 @@
 from room import Room
 from player import Player
+from item import Item
 
 # Declare all the rooms
 
@@ -34,7 +35,16 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+# Declare all the items
 
+items = {
+    "coins": Item("coins", "A pile of dirty gold coins.")
+}
+
+# Links items to rooms
+room['narrow'].items = [items['coins']]
+
+# For stretch, maybe a distinct map can be added as a property of each room, for example room['treasure'].map
 map = """
                N
       overlook ____________
@@ -50,7 +60,7 @@ map = """
 # Main
 #
 
-# Make a new player object that is currently in the 'outside' room.
+# ✓ Make a new player object that is currently in the 'outside' room.
 
 # Write a loop that:
 #
@@ -58,13 +68,15 @@ map = """
 # ✓ Prints the current description (the textwrap module might be useful here).
 # ✓ Waits for user input and decides what to do.
 #
-# If the user enters a cardinal direction, attempt to move to the room there.
-# Print an error message if the movement isn't allowed.
+# ✓ If the user enters a cardinal direction, attempt to move to the room there.
+# ✓ Print an error message if the movement isn't allowed.
 #
 # ✓ If the user enters "q", quit the game.
 
-
-player = Player(room["outside"])
+# Stretch:
+# ✓ If the user enters "m", show the map.
+# If the user enters "m", show the map and the user's place on the map.
+#
 
 # print(f"!!! {room['outside'].n_to}") # !!! Foyer
 # print(f"??? {room['outside'].__dict__}")
@@ -78,8 +90,16 @@ player = Player(room["outside"])
 print("\n")
 print('{:s}'.format('\u0332'.join('IZZY\'S LAMBDA ADVENTURE')))
 print("\nPress h for help\n")
+user_name = input("Hello adventurer. What is your name?\n>> ")
+player = Player(room["outside"], user_name)
+print(f"Welcome {user_name}. Safe travels.\n")
 while True:
     print(f'\nYou are at the {player.room}')
+    try:
+        print("You see:\n")
+        [print(f"   {i}: {val}") for i, val in enumerate(player.room.items)]
+    except AttributeError:
+        pass
     user_input = input("\nChoose a direction to continue...\n>> ")
     if user_input == "q":
         print("\nA tunnel of sparkling light erupts from beneath your feet and whisks you away...\n")
@@ -110,6 +130,8 @@ while True:
                 print("\nThe wall to the west is stained with liquid oozing from the ceiling.")
             elif player.room.room_name == "Outside Cave Entrance":
                 print("\nA large boulder blocks your path.")
+            elif player.room.room_name == "Foyer":
+                print("\nStalactites hang from the ceiling.")
     if user_input == "e":
         try:
             player.room = player.room.e_to
@@ -122,4 +144,6 @@ while True:
                 print("\nThe eastern wall is hot to the touch.")
             if player.room.room_name == "Grand Overlook":
                 print("\nTo the east smoke billows from a distant village.")
+    if user_input == "m":
+        print("\n"+map+"\n")
             
