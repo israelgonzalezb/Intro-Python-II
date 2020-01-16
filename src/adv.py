@@ -77,6 +77,7 @@ while True:
     print(f'You are at the {player.room}')
     user_input = input("Choose a direction to continue\n")
     if user_input == "q":
+        print("A tunnel of sparkling light erupts from beneath your feet and whisks you away.")
         break
     if user_input == "n":
         try:
@@ -84,7 +85,7 @@ while True:
         except AttributeError:
             if player.room.room_name == "Grand Overlook":
                 print("You stare into the abyss, and the abyss stares back. You decide not to attempt to cross the chasm.")
-            elif player.room.room_name == "treasure":
+            elif player.room.room_name == "Treasure Chamber":
                 print("You look at the wall in front of you. The rat in the corner hisses and scurries away.")
     if user_input == "s":
         try:
@@ -92,7 +93,17 @@ while True:
         except AttributeError:
             if player.room.room_name == "Outside Cave Entrance":
                 print("You're already outside. You can't be anymore outside!")
+            elif player.room.room_name == "Narrow Passage":
+                print("You look at the southernmost wall of the passage. You notice etchings in a strange language. It reads ⟟⋔⌿⍜⍀⏁ ⏃⋏⏁⟟☌⍀⏃⎐⟟⏁⊬")
     if user_input == "w":
-        break
+        try:
+            player.room = player.room.w_to
+        except AttributeError:
+            if player.room.room_name == "Grand Overlook":
+                print("In the distance to the west, the sky is covered in glowing ash.")
+            elif player.room.room_name == "Treasure Chamber":
+                print("The wall to the west is stained with liquid oozing from the ceiling.")
+            
+
     if user_input == "e":
-        break
+        player.room = player.room.e_to
