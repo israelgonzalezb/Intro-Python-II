@@ -38,11 +38,16 @@ room['treasure'].s_to = room['narrow']
 # Declare all the items
 
 items = {
-    "coins": Item("coins", "A pile of dirty gold coins.")
+    "coins": Item("Gold Coins", "A pile of dirty gold coins."),
+    "stick": Item("Pointy Stick", "A wooden stick for pointing at things."),
+    "rock": Item("Shiny Rock", "An ancient rock that sparkles in the light."),
+    "sword": Item("Short Sword", "A small iron sword for protection.")
 }
 
 # Links items to rooms
 room['narrow'].items = [items['coins']]
+room['overlook'].items = [items['stick'], items['rock']]
+
 
 # For stretch, maybe a distinct map can be added as a property of each room, for example room['treasure'].map
 map = """
@@ -91,16 +96,29 @@ print("\n")
 print('{:s}'.format('\u0332'.join('IZZY\'S LAMBDA ADVENTURE')))
 print("\nPress h for help\n")
 user_name = input("Hello adventurer. What is your name?\n>> ")
+
 player = Player(room["outside"], user_name)
+
+# Initiate player inventory as empty list
+player.inventory = [items["sword"]]
+
 print(f"Welcome {user_name}. Safe travels.\n")
 while True:
     print(f'\nYou are at the {player.room}')
     try:
+        len(player.room.items) > 0
         print("You see:\n")
-        [print(f"   {i}: {val}") for i, val in enumerate(player.room.items)]
+        [print(f"   {val.name}: {val}") for i, val in enumerate(player.room.items)]
+        # player.inventory.append(player.room.items[0])
     except AttributeError:
         pass
     user_input = input("\nChoose a direction to continue...\n>> ")
+    if user_input == "i":
+        if len(player.inventory) > 0:
+            print("Inventory\n")
+            [print(f" ☨ {val.name}: {val}") for i, val in enumerate(player.inventory)]
+        else:
+            print("Your inventory is empty...")
     if user_input == "q":
         print("\nA tunnel of sparkling light erupts from beneath your feet and whisks you away...\n")
         break
@@ -129,7 +147,7 @@ while True:
             elif player.room.room_name == "Treasure Chamber":
                 print("\nThe wall to the west is stained with liquid oozing from the ceiling.")
             elif player.room.room_name == "Outside Cave Entrance":
-                print("\nA large boulder blocks your path.")
+                print("\nA pile of rotting, burnt felled trees lies to the east.")
             elif player.room.room_name == "Foyer":
                 print("\nStalactites hang from the ceiling.")
     if user_input == "e":
@@ -139,11 +157,21 @@ while True:
             if player.room.room_name == "Narrow Passage":
                 print("\nYou look through a crevice in the wall. You see a far away village burning.")
             elif player.room.room_name == "Outside Cave Entrance":
-                print("\nA pile of rotting, burnt felled trees lies to the east.")
+                print("\nA large boulder blocks your path.")
             elif player.room.room_name == "Treasure Chamber":
                 print("\nThe eastern wall is hot to the touch.")
             if player.room.room_name == "Grand Overlook":
                 print("\nTo the east smoke billows from a distant village.")
     if user_input == "m":
         print("\n"+map+"\n")
-            
+    commands = user_input.split()
+    if commands[0].lower() in ["grab","get","take"]:
+        try:
+            print(f"items: {player.room.items[0]}, commands: {commands}, {items[commands[1].lower()]}")
+            if len(player.room.items) > 0 and items[commands[1].lower()] in player.room.items:
+                 player.inventory.append(items[commands[1].lower()])
+                 player.room.items.remove(items[commands[1].lower()])
+        except:
+            pass
+    elif commands[0].lower() == "drop":
+        print("Drop what?")
